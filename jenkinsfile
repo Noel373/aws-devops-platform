@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven 3.9.15' // Specify the Maven version installed on your Jenkins agent
+    }
 
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'
@@ -12,6 +15,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+                git branch: 'main', url: 'https://github.com/Noel373/aws-devops-platform'
             }
         }
 
@@ -19,6 +23,7 @@ pipeline {
             steps {
                 sh 'echo "Building the application..."'
                 // Add your build commands here
+                sh 'mvn clean install'
             }
         }
 
