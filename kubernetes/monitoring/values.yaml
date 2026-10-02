@@ -1,0 +1,92 @@
+# Prometheus configuration
+prometheus:
+  prometheusSpec:
+    retention: 7d
+
+    # Faster metric collection and alert evaluation
+    scrapeInterval: 15s
+    evaluationInterval: 15s
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+
+# Grafana configuration
+grafana:
+  enabled: true
+
+  adminUser: admin
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 300m
+      memory: 512Mi
+
+  persistence:
+    enabled: false
+
+
+# Node exporter
+nodeExporter:
+  enabled: true
+
+
+# Kubernetes state metrics
+kubeStateMetrics:
+  enabled: true
+
+
+# Kubernetes monitoring rules
+defaultRules:
+  create: true
+
+
+# Alertmanager configuration
+alertmanager:
+  enabled: true
+
+  config:
+    global:
+      resolve_timeout: 5m
+
+    route:
+      group_by:
+        - alertname
+        - namespace
+
+      # Send alerts faster
+      group_wait: 10s
+      group_interval: 1m
+      repeat_interval: 4h
+
+      receiver: slack
+
+    receivers:
+      - name: slack
+        slack_configs:
+          - api_url_file: /etc/alertmanager/secrets/alertmanager-slack/slack_api_url
+            channel: "#alerts"
+            send_resolved: true
+
+      # Required for the Watchdog route
+      - name: "null"
+
+  alertmanagerSpec:
+    secrets:
+      - alertmanager-slack
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 200m
+        memory: 128Mi

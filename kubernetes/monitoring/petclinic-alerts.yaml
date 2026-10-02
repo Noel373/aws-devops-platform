@@ -1,0 +1,62 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: petclinic-alerts
+  namespace: monitoring
+  labels:
+    release: monitoring
+    app.kubernetes.io/name: petclinic
+    app.kubernetes.io/part-of: petclinic
+spec:
+  groups:
+    - name: petclinic
+      rules:
+
+        - alert: PetClinicDeploymentUnavailable
+          expr: |
+            kube_deployment_status_replicas_available{
+              namespace="petclinic",
+              deployment="petclinic"
+            } == 0
+          for: 1m
+          labels:
+            severity: critical
+            app: petclinic
+          annotations:
+            summary: "PetClinic deployment unavailable"
+            description: "PetClinic has no available replicas in the petclinic namespace."
+
+        - alert: PetClinicPodRestarting
+          expr: |
+            increase(
+              kube_pod_container_status_restarts_total{
+                namespace="petclinic",
+                container="petclinic"
+              }[10m]
+            ) > 3
+          for: 5m
+          labels:
+            severity: warning
+            app: petclinic
+          annotations:
+            summary: "PetClinic pod restarting repeatedly"
+            description: "A PetClinic container has restarted more than 3 times in the last 10 minutes."
+
+        - alert: PetClinicDeploymentReplicasMismatch
+          expr: |
+            kube_deployment_spec_replicas{
+              namespace="petclinic",
+              deployment="petclinic"
+            }
+            !=
+            kube_deployment_status_replicas_available{
+              namespace="petclinic",
+              deployment="petclinic"
+            }
+          for: 5m
+          labels:
+            severity: warning
+            app: petclinic
+          annotations:
+            summary: "PetClinic replica count mismatch"
+            description: "The PetClinic deployment does not have the expected number of available replicas."
