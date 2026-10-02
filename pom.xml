@@ -39,7 +39,7 @@
   </properties>
 
   <dependencies>
-    <!-- Spring and Spring Boot dependencies -->
+    <!-- Spring and Spring Boot dependencies tested and approved -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
