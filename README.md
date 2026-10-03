@@ -2,13 +2,13 @@
 
 > **End-to-end DevOps project demonstrating CI/CD, AWS, Kubernetes, Infrastructure as Code, container security, monitoring, autoscaling, and production-oriented deployment practices.**
 
-![AWS]
-![Kubernetes]
-![Terraform]
-![Jenkins]
-![Docker]
-![Prometheus]
-![Grafana]
+![AWS](https://img.shields.io/badge/AWS-Cloud-orange)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-EKS-blue)
+![Terraform](https://img.shields.io/badge/Infrastructure-Terraform-purple)
+![Jenkins](https://img.shields.io/badge/CI%2FCD-Jenkins-red)
+![Docker](https://img.shields.io/badge/Containers-Docker-blue)
+![Prometheus](https://img.shields.io/badge/Monitoring-Prometheus-orange)
+![Grafana](https://img.shields.io/badge/Dashboards-Grafana-orange)
 ---
 
 ##  Project Overview
